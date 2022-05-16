@@ -12,12 +12,24 @@ async function handleRequest(request) {
   return new Response(html, {
     headers: {
       'content-type': 'text/html;charset=UTF-8',
-      'set-cookie': name1,
+      'set-cookie': name1, 
       'set-cookie': quote
     },
   });
 }
 
 addEventListener('fetch', event => {
+  console.log(document.cookie);
+
   return event.respondWith(handleRequest(event.request));
 });
+
+// attempt at adding an expiration date
+function display() { 
+  var now = new Date();
+  var time = now.getTime();
+  var expireTime = time + 1000*36000;
+  now.setTime(expireTime);
+  document.cookie = 'cookie=ok;expires='+now.toUTCString()+';path=/';
+  //console.log(document.cookie);  // 'Wed, 31 Oct 2012 08:50:17 UTC'
+}
